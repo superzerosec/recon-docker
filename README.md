@@ -3,16 +3,22 @@ Reconnaissance and vulnerability assessment toolset in a docker. This project se
 1. Internet asset reconnaissance
 2. Vulnerability assessment
 
-# Building docker
+# Building docker image
 ```bash
 git clone https://github.com/superzerosec/recon-docker.git
 cd recon-docker
 docker build -t superzerosec/recon-docker:0.1 .
 ```
 
-# Running docker
+# Running docker container
+Running 1st container running
 ```bash
-docker build -t superzerosec/recon-docker:0.1 .
+docker run -it --hostname recon-docker -v $PWD:/root/app --name myrecon superzerosec/recon-docker:0.1
+```
+
+Running 2nd or more container
+```bash
+docker exec -it myrecon /bin/zsh
 ```
 
 # Usage
@@ -37,7 +43,7 @@ subfinder -silent -dL domains.txt | dnsx -silent | httpx -silent | katana -silen
 ## Vulnerability assessment
 Vulnerability assessment single target on `tesla.com`
 ```bash
-subfinder -silent -d tesla.com | dnsx -silent | httpx -silent | katana -silent | nuclei -silent
+subfinder -silent -d tesla.com | dnsx -silent | httpx -silent | katana -silent | nuclei -silent -jsonl -o nuclei_vulnerabilities_$(date +%Y-%m-%d_%H:%M:%S).json -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" --severity low,medium,high,critical
 ```
 
 
